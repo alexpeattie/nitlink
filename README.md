@@ -1,8 +1,8 @@
-# Nitlink
+# Nitlink :link:
 
 ![Coverage badge](coverage/coverage.svg)
 
-**Nitlink** is a nice, nitpicky gem for parsing Link headers, which sticks as closely as possible Mark Nottingham's parsing algorithm (from his [most recent redraft of RFC 5988](https://mnot.github.io/I-D/rfc5988bis/?#parse)). Than means it's [particularly good](#feature-comparison) at handling weird edge cases, UTF-8 encoded parameters, URI resolution, boolean parameters and more. It also plays nicely with [a bunch](#third-party-clients) of popular HTTP client libraries, and has an extensive test suite.
+**Nitlink** is a nice, nitpicky gem for parsing Link headers, which sticks as closely as possible to Mark Nottingham's parsing algorithm (from his [most recent redraft of RFC 5988](https://mnot.github.io/I-D/rfc5988bis/?#parse)). Than means it's [particularly good](#feature-comparison) at handling weird edge cases, UTF-8 encoded parameters, URI resolution, boolean parameters and more. It also plays nicely with [a bunch](#third-party-clients) of popular HTTP client libraries, and has an extensive test suite.
 
 Tested with Ruby versions from **1.9.3** up to **2.3.1**.
 
@@ -62,7 +62,7 @@ ap links
 ]
 ```
 
-`links` is actually `Nitlink::LinkCollection` - an enhanced array which makes it convenient to grab a link based on its `relation_type`:
+`links` is actually a `Nitlink::LinkCollection` - an enhanced array which makes it convenient to grab a link based on its `relation_type`:
 
 ```ruby
 links.by_rel('next').target.to_s
@@ -85,14 +85,14 @@ Nitlink also supports a large number of third-party HTTP clients:
 - [Typhoeus](https://github.com/typhoeus/typhoeus)
 - [Unirest](https://github.com/Mashape/unirest-ruby)
 
-You can directly pass a HTTP response from one of these libraries into the `parse` method:
+You can pass a HTTP response from one of these libraries straight into the `parse` method:
 
 ```ruby
 response = HTTParty.get('https://api.github.com/search/code?q=addClass+user:mozilla')
 links = link_parser.parse(response)
 ```
 <br>
-For the extra lazy, Nitlink you can instead require `'nitlink/response'` which decorates the various response objects from third-party clients with a new `.links` method, which will return the parse Link headers. Note that `'nitlink/response'` must be required **after** the third-party client. (Note: `Net::HTTPResponse` also gets decorated, even though it's not technically third-party).
+For the extra lazy, you can instead require `nitlink/response` which decorates the various response objects from third-party clients with a new `.links` method, which returns the parsed Link headers from that response. `nitlink/response` must be required **after** the third-party client. (Note: `Net::HTTPResponse` also gets decorated, even though it's not technically third-party).
 
 ```ruby
 require 'httparty'
@@ -109,9 +109,9 @@ ap HTTParty.get('https://api.github.com/search/code?q=addClass+user:mozilla').li
 
 `response.links` is just syntactic sugar for calling `Nitlink::Parser.new.parse(response)`
 
-#### Raw response data
+#### Response as a hash
 
-You can also pass the relevant response data directly as a hash (containing string or symbol keys):
+You can also pass the relevant response data as a hash (with keys as strings or symbols):
 
 ```ruby
 links = link_parser.parse({
@@ -130,11 +130,11 @@ response = HTTParty.post('https://api.github.com/search/code?q=addClass+user:moz
 links = link_parser.parse(response, 'POST')
 ```
 
-This allows Nitlink to correctly set the `context` of links (resources fetched by a method other than `GET` or `HEAD` generally have an anonymous context) - but otherwise everything will work fine if you forget to specify this.
+This allows Nitlink to correctly set the `context` of links (resources fetched by a method other than `GET` or `HEAD` generally have an anonymous context) - but otherwise everything works OK if you don't specify this.
 
 #### Example: paginating Github search
 
-Here we make an initial call to Github API's [search endpoint](https://developer.github.com/v3/search/#search-code) then iterate through the pages of results using Link headers:
+Here we make an initial call to the Github API's [search endpoint](https://developer.github.com/v3/search/#search-code) then iterate through the pages of results using Link headers:
 
 ```ruby
 require 'nitlink'
@@ -156,7 +156,7 @@ end
 
 ## Feature comparison
 
-A few different Link header parsers (in various languages) already exist. As the table below shows, Nitlink is the first library (AFAIK) which fully implements all the details outlined in the spec (RFC 5988):
+A few different Link header parsers (in various languages) already exist. Some of them are quite lovely :relaxed: ! Nitlink does its best to be as feature complete as possible; as far as I know it's the first library to cover all the area the spec (RFC 5988) sets out:
 
 | Feature | Nitlink | [parse-link-header](https://github.com/thlorenz/parse-link-header) | [link_header](https://github.com/asplake/link_header) | [li](https://github.com/jfromaniello/li) | [weblinking](https://github.com/fuzzyBSc/weblinking) | [link-headers](https://github.com/wombleton/link-headers) | [backbone-paginator](https://github.com/backbone-paginator/backbone.paginator) | [http-link](https://github.com/victorenator/http-link) | [node-http-link-header](https://github.com/jhermsmeier/node-http-link-header) |
 | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |  ------------- | ------------- | ------------- | ------------- |
@@ -187,7 +187,7 @@ Accepts the following arguments:
   * A `Hash` containing:
     * `request_uri` (`String` or `URI`) - the URI of the requested resource
     * `status` - the numerical status code of the response (e.g. `200`)
-    * `headers` (`Hash` or `String`) - headers can either be provided as a Hash of HTTP header fields (with keys being the field names and the values being the field values) or in its raw string format (each field separated by CR-LF pairs). Only the `Link` and `Content-Location` are used by Nitlink. Nitlink treats field names case-insensitively.
+    * `headers` (`Hash` or `String`) - headers can either be provided as a Hash of HTTP header fields (with keys being the field names and the values being the field values) or a raw HTTP header string (each field separated by CR-LF pairs). Only the `Link` and `Content-Location` headers are used by Nitlink. Nitlink treats field names case-insensitively.
     <br><br>
 
       ```ruby
@@ -208,8 +208,8 @@ Returns a `Nitlink::LinkCollection` containing `Nitlink::Link` objects:
 
 * When the response contains no `Link` header an empty collection is returned
 * Links without a relation type (`rel`) specified are omitted
-* The links' parameters are serialized into the `Nitlink::Link`'s `target_attributes`. For more details of the serialization see `Nitlink::Link#target_attributes` below.
-* Where a link has more than one relation type, one entry per relation type is added:
+* The links' parameters are serialized into the `Nitlink::Link`'s `target_attributes`. For more details of the serialization see `Nitlink::Link#target_attributes` [below](#target_attributes--hash).
+* Where a link has more than one relation type, one entry per relation type is appended:
 
   ```ruby
   ap parser.parse({
@@ -234,7 +234,7 @@ Returns a `Nitlink::LinkCollection` containing `Nitlink::Link` objects:
   ]
   ```
 
-If the `Link` header does not begin with `"<"`, or `"<"` isn't followed by `">"` it's malformed and unparseable - in which case a `Nitlink::MalformedLinkHeaderError` is thrown. If `response` is an instance of a class which Nitlink doesn't know how to handle (e.g. from an unsupported third-party client) a `Nitlink::UnknownResponseTypeError` is thrown.
+If the `Link` header does not begin with `"<"`, or `"<"` isn't followed by `">"` it's considered malformed and unparseable - in which case a **`Nitlink::MalformedLinkHeaderError`** is thrown. If `response` is an instance of a class which Nitlink doesn't know how to handle (e.g. from an unsupported third-party client) a **`Nitlink::UnknownResponseTypeError`** is thrown.
 
 ### Nitlink::LinkCollection
 
@@ -248,7 +248,7 @@ Accepts the following argument:
 
 Returns a single `Nitlink::Link` object whose `relation_type` attribute matches the relation type provided, or `nil` if the collection doesn't contain a matching link. If two links exist which match the provided relation type (this should never happen in practice), the first matching link in the collection is returned.
 
-Raises an `ArgumentError` if the `relation_type` is blank.
+Raises an **`ArgumentError`** if the `relation_type` is blank.
 
 #### `to_h` => `Hash`
 
