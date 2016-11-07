@@ -52,6 +52,15 @@ RSpec.describe Nitlink::ResponseNormalizer do
       expect { rn.metadata(status: 'OK', request_uri: uri, headers: headers) }.to raise_error ArgumentError
     end
 
+    it 'combines multiple Link headers (e.g. an array) into a single Link header (joining with commas)' do
+      _uri, _status, link, _context = rn.metadata(status: 200, request_uri: uri, headers: {
+        'Content-Location' => 'http://example.com',
+        'Link' => ['</view>; rel=about', '</page2>; rel=next']
+      })
+
+      expect(link).to eq '</view>; rel=about,</page2>; rel=next'
+    end
+
     it 'raises an error when the response is of an unhandled type' do
       UnkResponse = Struct.new(:foo)
       expect { rn.metadata(UnkResponse.new('bar')) }.to raise_error Nitlink::UnknownResponseTypeError

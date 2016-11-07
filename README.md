@@ -20,9 +20,19 @@ Or add it to your Gemfile and run `bundle install`
 gem 'nitlink', '~> 1.0'
 ```
 
+And you're ready to go!
+
+```ruby
+require 'httparty'
+require 'nitlink/response'
+
+HTTParty.get('https://www.w3.org/wiki/Main_Page').links.by_rel('last').target
+ => #<URI::HTTPS https://www.w3.org/wiki/index.php?title=Main_Page&oldid=100698>
+```
+
 ## Usage
 
-The easiest way to use Nitlink is to directly parse in a HTTP response from `Net::HTTP`:
+The most basic way to use Nitlink is to directly pass in a HTTP response from `Net::HTTP`:
 
 ```ruby
 require 'nitlink'
@@ -81,6 +91,23 @@ You can directly pass a HTTP response from one of these libraries into the `pars
 response = HTTParty.get('https://api.github.com/search/code?q=addClass+user:mozilla')
 links = link_parser.parse(response)
 ```
+<br>
+For the extra lazy, Nitlink you can instead require `'nitlink/response'` which decorates the various response objects from third-party clients with a new `.links` method, which will return the parse Link headers. Note that `'nitlink/response'` must be required **after** the third-party client. (Note: `Net::HTTPResponse` also gets decorated, even though it's not technically third-party).
+
+```ruby
+require 'httparty'
+require 'nitlink/response'
+
+ap HTTParty.get('https://api.github.com/search/code?q=addClass+user:mozilla').links
+
+# =>
+[
+    [0] #<Nitlink::Link:0x7fcd09019158
+        context = #<URI::HTTPS https://api.github.com/search/code?q=addClass+user:mozilla>,
+# ....
+```
+
+`response.links` is just syntactic sugar for calling `Nitlink::Parser.new.parse(response)`
 
 #### Raw response data
 

@@ -64,7 +64,7 @@ module Nitlink
     end
 
     def grab_headers(headers)
-      normalized_headers = Hash[headers.map { |key, value| [key.to_s.downcase, Array(value).first] }]
+      normalized_headers = Hash[headers.map { |key, value| [key.to_s.downcase, Array(value).join(',')] }]
       [normalized_headers['link'], normalized_headers['content-location']]
     end
 
