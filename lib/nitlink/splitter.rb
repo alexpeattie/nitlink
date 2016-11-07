@@ -1,3 +1,5 @@
+require 'strscan'
+
 module Nitlink
   class Splitter
     def initialize(string)
