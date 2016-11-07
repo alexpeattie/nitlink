@@ -13,5 +13,5 @@ group :clients do
   gem 'typhoeus', '>= 1.1.0'
   gem 'httpclient', '>= 2.8'
   gem 'patron', '>= 0.8.0'
-  # gem 'unirest', '>= 1.1.2' <- dependencies conflicts
+  # gem 'unirest', '>= 1.1.2' <- dependency conflicts
 end

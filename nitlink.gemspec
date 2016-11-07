@@ -9,15 +9,18 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Alex Peattie']
   spec.email         = ['me@alexpeattie.com']
 
-  spec.summary       = %q{Write a short summary, because Rubygems requires one.}
-  spec.description   = %q{Write a longer description or delete this line.}
+  spec.summary       = 'Nitlink is a nitpicky gem for parsing Link headers (per RFC 5988)'
+  spec.description   = 'Nitlink is a nice, nitpicky gem for parsing Link headers, which aims to stick
+ as closely as possible to RFC 5988. Has support for UTF-8 encoded parameters, URI resolution, boolean parameters,
+ weird edge cases and more.'
   spec.homepage      = 'https://github.com/alexpeattie/nitlink'
   spec.license       = 'MIT'
 
-  spec.files         = `git ls-files -z`.split("\x0").reject do |f|
-    f.match(%r{^(test|spec|features)/})
-  end
+  spec.files         = Dir['{lib,spec}/**/*.rb'] + %w(LICENSE README.md)
   spec.require_paths = ['lib']
+  spec.files         = Dir['lib/**/*.rb']
+
+  spec.required_ruby_version = '>= 1.9.3'
 
   spec.add_dependency 'hashwithindifferentaccess', '~> 0.1.1'
 
