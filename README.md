@@ -1,6 +1,6 @@
 # Nitlink :link:
 
-![Coverage badge](https://cdn.rawgit.com/alexpeattie/nitlink/master/coverage/coverage.svg)
+![Coverage badge](https://cdn.rawgit.com/alexpeattie/nitlink/master/coverage/coverage.svg) [![Build Status](https://travis-ci.org/alexpeattie/nitlink.svg?branch=master)](https://travis-ci.org/alexpeattie/nitlink) ![Version 1.0.0](https://img.shields.io/gem/v/nitlink.svg) [![Code Climate](https://codeclimate.com/github/alexpeattie/nitlink/badges/gpa.svg)](https://codeclimate.com/github/alexpeattie/nitlink)
 
 **Nitlink** is a nice, nitpicky gem for parsing Link headers, which sticks as closely as possible to Mark Nottingham's parsing algorithm (from his [most recent redraft of RFC 5988](https://mnot.github.io/I-D/rfc5988bis/?#parse)). Than means it's [particularly good](#feature-comparison) at handling weird edge cases, UTF-8 encoded parameters, URI resolution, boolean parameters and more. It also plays nicely with [a bunch](#third-party-clients) of popular HTTP client libraries, and has an extensive test suite.
 
