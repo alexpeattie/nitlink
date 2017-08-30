@@ -1,4 +1,4 @@
-require 'hashwithindifferentaccess'
+require_relative './hash_with_indifferent_access'
 
 module Nitlink
   class LinkCollection < Array
@@ -8,7 +8,7 @@ module Nitlink
     end
 
     def to_h
-      hash = HashWithIndifferentAccess.new
+      hash = Nitlink::HashWithIndifferentAccess.new
       each { |link| hash[link.relation_type] ||= link }
       hash
     end

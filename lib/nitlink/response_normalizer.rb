@@ -1,5 +1,5 @@
 require 'uri'
-require 'hashwithindifferentaccess'
+require_relative './hash_with_indifferent_access'
 
 module Nitlink
   class ResponseNormalizer
@@ -38,7 +38,7 @@ module Nitlink
         return metadata(response.raw_body)
       # :nocov:
       when 'Hash'
-        response = HashWithIndifferentAccess.new(response)
+        response = Nitlink::HashWithIndifferentAccess.new(response)
         response[:headers] = headers_from_string(response[:headers]) if String === response[:headers]
 
         [response[:request_uri], response[:status], grab_headers(response[:headers])]
