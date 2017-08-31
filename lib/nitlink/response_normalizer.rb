@@ -8,7 +8,7 @@ module Nitlink
 
       uri, status, (link, content_location) = case response_class
       when 'Curl::Easy'
-        [response.url, response.response_code, grab_headers(headers_from_string response.header_str)]
+        [response.url.chomp('?'), response.response_code, grab_headers(headers_from_string response.header_str)]
       when 'Excon::Response'
         scheme = response.port == 443 ? 'https' : 'http'
         # We have to reconstruct to URL annoyingly
