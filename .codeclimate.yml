@@ -7,8 +7,6 @@ engines:
       languages:
         ruby:
           mass_threshold: 18
-  bundler-audit:
-    enabled: true
 ratings:
   paths:
   - lib/**/*
