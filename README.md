@@ -1,10 +1,36 @@
-# Nitlink :link:
+<p align='center'>
+  <img src='https://user-images.githubusercontent.com/636814/29934582-a9a2ea10-8e73-11e7-9f57-72a47c3331ae.png' alt='Nitlink' width='350'>
+</p>
 
-![Coverage badge](https://cdn.rawgit.com/alexpeattie/nitlink/master/coverage/coverage.svg) [![Build Status](https://travis-ci.org/alexpeattie/nitlink.svg?branch=master)](https://travis-ci.org/alexpeattie/nitlink) ![Version 1.0.0](https://img.shields.io/gem/v/nitlink.svg) [![Code Climate](https://codeclimate.com/github/alexpeattie/nitlink/badges/gpa.svg)](https://codeclimate.com/github/alexpeattie/nitlink)
+<p align='center'>
+  <a href="https://alexpeattie.github.io/nitlink/coverage/index.html"><img src="https://cdn.rawgit.com/alexpeattie/nitlink/master/coverage/coverage.svg" alt="Coverage badge"></a>
+  <a href="https://travis-ci.org/alexpeattie/nitlink"><img src="https://travis-ci.org/alexpeattie/nitlink.svg?branch=master" alt="Build Status"></a>
+  <a href="https://rubygems.org/gems/nitlink/versions"><img src="https://img.shields.io/gem/v/nitlink.svg" alt="Version 1.1.0"></a>
+  <a href="https://codeclimate.com/github/alexpeattie/nitlink"><img src="https://codeclimate.com/github/alexpeattie/nitlink/badges/gpa.svg" alt="Code Climate"></a>
+</p>
+
+<hr>
 
 **Nitlink** is a nice, nitpicky gem for parsing Link headers, which sticks as closely as possible to Mark Nottingham's parsing algorithm (from his [most recent redraft of RFC 5988](https://mnot.github.io/I-D/rfc5988bis/?#parse)). That means it's [particularly good](#feature-comparison) at handling weird edge cases, UTF-8 encoded parameters, URI resolution, boolean parameters and more. It also plays nicely with [a bunch](#third-party-clients) of popular HTTP client libraries, has an extensive test suite, and zero external dependencies.
 
-Tested with Ruby versions from **1.9.3** up to **2.4.1**. Ruby 2.0+ is fully supported, 1.9.3 has fully functional parsing, but the support for third-party clients is somewhat limited (because, for example, Net::HTTPResponse doesn't expose the request URI in 1.9.3).
+Tested with Ruby versions from **1.9.3** up to **2.4.1**. Ruby 2.0+ is fully supported, 1.9.3 has fully functional parsing, but the support for third-party clients is somewhat limited (because, for example, `Net::HTTPResponse` doesn't expose the request URI in 1.9.3).
+
+## Contents
+
+  * [Installation](#installation)
+  * [Usage](#usage)
+  * [Feature comparison](#feature-comparison)
+  * [API](#api)
+    * [`Nitlink::Parser`](#nitlinkparser)
+    * [`Nitlink::LinkCollection`](#nitlinklinkcollection)
+    * [`Nitlink::Link`](#nitlinklink)
+    * [`Nitlink::HashWithIndifferentAccess`](#nitlinkhashwithindifferentaccess)
+  * [Changelog](#changelog)
+  * [Developing Nitlink](#developing-nitlink)
+  * [Contributing](#contributing)
+  * [Future features](#future-features)
+  * [License](#license)
+  * [Author](#author)
 
 ## Installation
 
@@ -17,7 +43,7 @@ gem install nitlink
 Or add it to your Gemfile and run `bundle install`
 
 ```ruby
-gem 'nitlink', '~> 1.0'
+gem 'nitlink', '~> 1.1'
 ```
 
 And you're ready to go!
@@ -251,15 +277,15 @@ Returns a single [`Nitlink::Link`](#nitlinklink) object whose `relation_type` at
 
 Raises an **`ArgumentError`** if the `relation_type` is blank.
 
-#### `to_h(options = { with_indifferent_access: true })` => `Nitlink::HashWithIndifferentAccess` or `Hash`
+#### `to_h(options = { with_indifferent_access: true })` => [`Nitlink::HashWithIndifferentAccess`](#nitlinkhashwithindifferentaccess) or `Hash`
 
 Also aliased as `to_hash`.
 
 Accepts the following arguments:
 
-* `options` (optional, `Hash`) - When `options[:with_indifferent_access]` is truthy (as it is by default) the method returns a [`Nitlink::HashWithIndifferentAccess`](#) where each key is a relation type and each value is a [`Nitlink::Link`](#nitlinklink). When `options[:with_indifferent_access]` is falsy it returns the equivalent `Hash` with string keys.
+* `options` (optional, `Hash`) - When `options[:with_indifferent_access]` is truthy (as it is by default) the method returns a [`Nitlink::HashWithIndifferentAccess`](#nitlinkhashwithindifferentaccess) where each key is a relation type and each value is a [`Nitlink::Link`](#nitlinklink). When `options[:with_indifferent_access]` is falsy it returns the equivalent `Hash` with string keys.
 
-An empty collection will return an empty `Nitlink::HashWithIndifferentAccess`/`Hash`. If two links exist which match a given relation type, the value will be the first link in the collection.
+An empty collection will return an empty [`Nitlink::HashWithIndifferentAccess`](#nitlinkhashwithindifferentaccess)/`Hash`. If two links exist which match a given relation type, the value will be the first link in the collection.
 
 ### Nitlink::Link
 
@@ -327,9 +353,23 @@ ap parser.parse({
 ]
 ```
 
+### Nitlink::HashWithIndifferentAccess
+
+Implements a hash where keys :foo and "foo" are considered to be the same. It's closely modeled on [Thor's](https://github.com/erikhuda/thor) implementation ([`Thor::CoreExt::HashWithIndifferentAccess`](http://www.rubydoc.info/github/erikhuda/thor/Thor/CoreExt/HashWithIndifferentAccess)), except without the magic predicates.
+
+Instances are largely interchangeable with [`ActiveSupport::HashWithIndifferentAccess`](http://api.rubyonrails.org/classes/ActiveSupport/HashWithIndifferentAccess.html), but doesn't have the additional methods not present on `Hash`, like `stringify_keys`, `symbolize_keys`, `regular_writer` etc.
+
 ## Changelog
 
 Nitlink follows [semantic versioning](http://semver.org/).
+
+#### [1.1.0](https://rubygems.org/gems/nitlink/versions/1.0.0) (1 September 2017)
+
+* Remove dependency on `hashwithindifferentaccess` gem, implement inline `HashWithIndifferentAccess` class modeled on Thor's implementation (see [#1](https://github.com/alexpeattie/nitlink/issues/1))
+* Add `with_indifferent_access` option to `#to_h`, and alias `#to_h` as `#to_hash`
+* Deprecate Unirest support (see [#3](https://github.com/alexpeattie/nitlink/issues/3))
+* Improve compatibility and build process for Ruby 1.9.3 and 2.0
+* Fix minor Curb regression
 
 #### [1.0.0](https://rubygems.org/gems/nitlink/versions/1.0.0) (7 November 2016)
 

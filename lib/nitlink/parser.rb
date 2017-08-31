@@ -61,7 +61,7 @@ module Nitlink
     end
 
     def first_match(link_parameters, param_name)
-      (link_parameters.find { |name, value| name == param_name } || []).last
+      (link_parameters.find { |name, _value| name == param_name } || []).last
     end
 
     def extract_target_attributes(link_parameters)
