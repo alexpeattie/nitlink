@@ -22,9 +22,10 @@ Gem::Specification.new do |spec|
 
   spec.required_ruby_version = '>= 1.9.3'
 
-  spec.add_development_dependency 'bundler', '> 1.13'
+  spec.add_development_dependency 'bundler', '> 1.7.6'
   spec.add_development_dependency 'rake', '~> 10.0'
   spec.add_development_dependency 'rspec', '~> 3.5.0'
   spec.add_development_dependency 'simplecov', '~> 0.12.0'
   spec.add_development_dependency 'simplecov-shield', '~> 0.1.0'
+  spec.add_development_dependency 'addressable', '~> 2.4.0'
 end
