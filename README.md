@@ -183,7 +183,7 @@ end
 
 ## Feature comparison
 
-A few different Link header parsers (in various languages) already exist. Some of them are quite lovely :relaxed: ! Nitlink does its best to be as feature complete as possible; as far as I know it's the first library to cover all the area the spec (RFC 5988) sets out:
+A few different Link header parsers (in various languages) already exist. Some of them are quite lovely :relaxed: ! Nitlink does its best to be as feature complete as possible; as far as I know it's the first library to cover all the areas the spec (RFC 5988) sets out:
 
 | Feature | Nitlink | [parse-link-header](https://github.com/thlorenz/parse-link-header) | [link_header](https://github.com/asplake/link_header) | [li](https://github.com/jfromaniello/li) | [weblinking](https://github.com/fuzzyBSc/weblinking) | [link-headers](https://github.com/wombleton/link-headers) | [backbone-paginator](https://github.com/backbone-paginator/backbone.paginator) | [http-link](https://github.com/victorenator/http-link) | [node-http-link-header](https://github.com/jhermsmeier/node-http-link-header) |
 | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |  ------------- | ------------- | ------------- | ------------- |
@@ -203,7 +203,7 @@ A few different Link header parsers (in various languages) already exist. Some o
 
 ### Nitlink::Parser
 
-#### `parse(response, method = 'GET')` => [`Nitlink::LinkCollection`](#nitlinklinkcollection)
+#### `#parse(response, method = 'GET')` => [`Nitlink::LinkCollection`](#nitlinklinkcollection)
 
 Accepts the following arguments:
 
@@ -229,7 +229,7 @@ Accepts the following arguments:
       ```
 
 
-* `method` (optional, `String`) - The HTTP method used to make the request. Defaults to `'GET'`. This is used to establish the correct identity (per [RFC 7231](https://www.rfc-editor.org/info/rfc7231), Section 3.1.4.1)
+* `method` (optional, `String`) - The HTTP method used to make the request. Defaults to `'GET'`. This is used to establish the correct identity (per [RFC 7231, Section 3.1.4.1](https://tools.ietf.org/html/rfc7231#section-3.1.4.1))
 
 Returns a [`Nitlink::LinkCollection`](#nitlinklinkcollection) containing [`Nitlink::Link`](#nitlinklink) objects:
 
@@ -267,7 +267,7 @@ If the `Link` header does not begin with `"<"`, or `"<"` isn't followed by `">"`
 
 An extension of `Array` with additional convenience methods for handling links based on their relation type.
 
-#### `by_rel(relation_type)` => [`Nitlink::Link`](#nitlinklink) or `nil`
+#### `#by_rel(relation_type)` => [`Nitlink::Link`](#nitlinklink) or `nil`
 
 Accepts the following argument:
 
@@ -277,7 +277,7 @@ Returns a single [`Nitlink::Link`](#nitlinklink) object whose `relation_type` at
 
 Raises an **`ArgumentError`** if the `relation_type` is blank.
 
-#### `to_h(options = { with_indifferent_access: true })` => [`Nitlink::HashWithIndifferentAccess`](#nitlinkhashwithindifferentaccess) or `Hash`
+#### `#to_h(options = { with_indifferent_access: true })` => [`Nitlink::HashWithIndifferentAccess`](#nitlinkhashwithindifferentaccess) or `Hash`
 
 Also aliased as `to_hash`.
 
@@ -307,21 +307,21 @@ A `Struct` representing a single link with a specific relation type. It has four
 >
 ```
 
-#### `context` => `URI` or `nil`
+#### `#context` => `URI` or `nil`
 
 Returns the context of the link as a `URI` object. Usually this will be the same as the request URI, but may be modified by the `anchor` parameter or `Content-Location` header. Additionally some HTTP request methods or status codes result in an "anonymous" link context being assigned (represented by `nil`).
 
-#### `target` => `URI`
+#### `#target` => `URI`
 
 Returns the target of the link as a `URI` object. If the URI given in the `Link` header is relative, Nitlink resolves it (based on the request URI).
 
-#### `relation_type` => `String`
+#### `#relation_type` => `String`
 
 A single relation type, describing the kind of relationship this link represents. For example, `"prev"` would indicate that the target resource immediately precedes the context. It could also be an extension relation type (an absolute URI serialized as a string).
 
 Relation types are always case-normalized to lowercase.
 
-#### `target_attributes` => `Hash`
+#### `#target_attributes` => `Hash`
 
 Captures the values of the parameters that aren't used to construct the `context` or `target` (i.e. other than `rel` and `anchor`) `title`, for example.
 
@@ -365,7 +365,7 @@ Nitlink follows [semantic versioning](http://semver.org/).
 
 #### [1.1.0](https://rubygems.org/gems/nitlink/versions/1.0.0) (1 September 2017)
 
-* Remove dependency on `hashwithindifferentaccess` gem, implement inline `HashWithIndifferentAccess` class modeled on Thor's implementation (see [#1](https://github.com/alexpeattie/nitlink/issues/1))
+* Remove dependency on `hashwithindifferentaccess` gem, implement native `HashWithIndifferentAccess` class modeled on Thor's implementation (see [#1](https://github.com/alexpeattie/nitlink/issues/1))
 * Add `with_indifferent_access` option to `#to_h`, and alias `#to_h` as `#to_hash`
 * Deprecate Unirest support (see [#3](https://github.com/alexpeattie/nitlink/issues/3))
 * Improve compatibility and build process for Ruby 1.9.3 and 2.0
