@@ -21,9 +21,9 @@ RSpec.describe 'assorted test cases for various Link headers (including edge cas
       expect { parsed }.to raise_error Nitlink::MalformedLinkHeaderError
     end
 
-    xit 'rejects a simple link relation name in single quotes' do
-      @link = "<fail.css>; rel='stylesheet'"
-      expect { parsed }.to raise_error Nitlink::MalformedLinkHeaderError
+    it 'treats a single quoted link relation name literally' do
+      @link = "<simple.css>; rel='stylesheet'"
+      expect(parsed.first.relation_type).to eq "'stylesheet'"
     end
 
     it 'parses a link with two relation types' do
