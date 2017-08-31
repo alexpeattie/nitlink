@@ -113,9 +113,13 @@ RSpec.describe Nitlink::ResponseNormalizer do
       expect(rn.metadata Typhoeus.get(uri)).to eq expected_metadata
     end
 
-    xit 'can process a Unirest response' do
-      # This works, but the dependencies are out of date and cause conflicts
-      expect(rn.metadata Unirest.get(uri)).to eq expected_metadata
+    it 'can process a Unirest response, but gives a deprecation warning' do
+      response = instance_double('Unirest::HttpResponse')
+      allow(response).to receive_message_chain(:class, :name => 'Unirest::HttpResponse')
+      allow(response).to receive(:raw_body).and_return(Net::HTTP.get_response(URI.parse uri))
+
+      expect(rn.metadata response).to eq expected_metadata
+      expect { rn.metadata response }.to output.to_stderr
     end
   end
 end

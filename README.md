@@ -2,7 +2,7 @@
 
 ![Coverage badge](https://cdn.rawgit.com/alexpeattie/nitlink/master/coverage/coverage.svg) [![Build Status](https://travis-ci.org/alexpeattie/nitlink.svg?branch=master)](https://travis-ci.org/alexpeattie/nitlink) ![Version 1.0.0](https://img.shields.io/gem/v/nitlink.svg) [![Code Climate](https://codeclimate.com/github/alexpeattie/nitlink/badges/gpa.svg)](https://codeclimate.com/github/alexpeattie/nitlink)
 
-**Nitlink** is a nice, nitpicky gem for parsing Link headers, which sticks as closely as possible to Mark Nottingham's parsing algorithm (from his [most recent redraft of RFC 5988](https://mnot.github.io/I-D/rfc5988bis/?#parse)). Than means it's [particularly good](#feature-comparison) at handling weird edge cases, UTF-8 encoded parameters, URI resolution, boolean parameters and more. It also plays nicely with [a bunch](#third-party-clients) of popular HTTP client libraries, and has an extensive test suite.
+**Nitlink** is a nice, nitpicky gem for parsing Link headers, which sticks as closely as possible to Mark Nottingham's parsing algorithm (from his [most recent redraft of RFC 5988](https://mnot.github.io/I-D/rfc5988bis/?#parse)). That means it's [particularly good](#feature-comparison) at handling weird edge cases, UTF-8 encoded parameters, URI resolution, boolean parameters and more. It also plays nicely with [a bunch](#third-party-clients) of popular HTTP client libraries, has an extensive test suite, and zero external dependencies.
 
 Tested with Ruby versions from **1.9.3** up to **2.4.1**.
 
@@ -83,7 +83,7 @@ Nitlink also supports a large number of third-party HTTP clients:
 - [Patron](https://github.com/toland/patron)
 - [REST Client](https://github.com/rest-client/rest-client)
 - [Typhoeus](https://github.com/typhoeus/typhoeus)
-- [Unirest](https://github.com/Mashape/unirest-ruby)
+- [Unirest](https://github.com/Mashape/unirest-ruby) - ⚠️ Deprecated, will be removed in Nitlink 2.0, see [here](https://github.com/alexpeattie/nitlink/issues/3).
 
 You can pass a HTTP response from one of these libraries straight into the `parse` method:
 
@@ -182,7 +182,7 @@ Accepts the following arguments:
 
 * `response` (required) - The HTTP response whose `Link` header you wish to parse. Can be any one of:
   * An instance of `Net::HTTPResponse` and its subclasses
-  * An instance of `Curl::Easy`, `Excon::Response`, `Faraday::Response`, `HTTP::Message`, `HTTP::Response`, `HTTParty::Response`, `Patron::Response`, `RestClient::Response`, `Typhoeus::Response` or `Unirest::HttpResponse`
+  * An instance of `Curl::Easy`, `Excon::Response`, `Faraday::Response`, `HTTP::Message`, `HTTP::Response`, `HTTParty::Response`, `Patron::Response`, `RestClient::Response` or `Typhoeus::Response` (or `Unirest::HttpResponse` although this is deprecated, and will be removed in Nitlink 2.0)
   * An instance of `StringIO` or `Tempfile` created by `OpenURI`'s `Kernel#open` method
   * A `Hash` containing:
     * `request_uri` (`String` or `URI`) - the URI of the requested resource

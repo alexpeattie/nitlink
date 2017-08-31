@@ -33,10 +33,9 @@ module Nitlink
         [response.base_uri, response.status[0], grab_headers(response.meta)]
       when 'Typhoeus::Response'
         [response.request.base_url, response.code, grab_headers(response.headers)]
-      # :nocov:
       when 'Unirest::HttpResponse'
+        warn "Unirest support is deprecated and will be removed in Nitlink 2.0"
         return metadata(response.raw_body)
-      # :nocov:
       when 'Hash'
         response = Nitlink::HashWithIndifferentAccess.new(response)
         response[:headers] = headers_from_string(response[:headers]) if String === response[:headers]
