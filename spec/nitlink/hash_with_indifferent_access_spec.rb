@@ -6,6 +6,10 @@ RSpec.describe Nitlink::HashWithIndifferentAccess do
     Nitlink::HashWithIndifferentAccess.new :foo => 'bar', 'baz' => 'bee', :force => true
   end
 
+  let(:other) do
+    {:foo => 'qux', 'boo' => 'bae'}
+  end
+
   it 'has values accessible by either strings or symbols' do
     expect(hash['foo']).to eq('bar')
     expect(hash[:foo]).to eq('bar')
@@ -55,7 +59,6 @@ RSpec.describe Nitlink::HashWithIndifferentAccess do
   end
 
   it 'handles reverse_merge' do
-    other = {:foo => 'qux', 'boo' => 'bae'}
     new_hash = hash.reverse_merge(other)
 
     expect(hash.object_id).not_to eq(new_hash.object_id)
@@ -64,7 +67,6 @@ RSpec.describe Nitlink::HashWithIndifferentAccess do
   end
 
   it 'handles reverse_merge!' do
-    other = {:foo => 'qux', 'boo' => 'bae'}
     new_hash = hash.reverse_merge!(other)
 
     expect(hash.object_id).to eq(new_hash.object_id)

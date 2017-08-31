@@ -6,7 +6,7 @@ engines:
     config:
       languages:
         ruby:
-          mass_threshold: 18
+          mass_threshold: 30
 ratings:
   paths:
   - lib/**/*
