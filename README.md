@@ -62,7 +62,7 @@ ap links
 ]
 ```
 
-`links` is actually a `Nitlink::LinkCollection` - an enhanced array which makes it convenient to grab a link based on its `relation_type`:
+`links` is actually a [`Nitlink::LinkCollection`](#nitlinklinkcollection) - an enhanced array which makes it convenient to grab a link based on its `relation_type`:
 
 ```ruby
 links.by_rel('next').target.to_s
@@ -85,14 +85,15 @@ Nitlink also supports a large number of third-party HTTP clients:
 - [Typhoeus](https://github.com/typhoeus/typhoeus)
 - [Unirest](https://github.com/Mashape/unirest-ruby) - ⚠️ Deprecated, will be removed in Nitlink 2.0, see [here](https://github.com/alexpeattie/nitlink/issues/3).
 
-You can pass a HTTP response from one of these libraries straight into the `parse` method:
+You can pass a HTTP response from one of these libraries straight into the [`#parse`](#parseresponse-method--get--nitlinklinkcollection) method:
 
 ```ruby
 response = HTTParty.get('https://api.github.com/search/code?q=addClass+user:mozilla')
 links = link_parser.parse(response)
 ```
 <br>
-For the extra lazy, you can instead require `nitlink/response` which decorates the various response objects from third-party clients with a new `.links` method, which returns the parsed Link headers from that response. `nitlink/response` must be required **after** the third-party client. (Note: `Net::HTTPResponse` also gets decorated, even though it's not technically third-party).
+
+For the extra lazy, you can instead require `nitlink/response` which decorates the various response objects from third-party clients with a new `#links` method, which returns the parsed Link headers from that response. `nitlink/response` must be required **after** the third-party client. (Note: `Net::HTTPResponse` also gets decorated, even though it's not technically third-party).
 
 ```ruby
 require 'httparty'
@@ -123,7 +124,7 @@ links = link_parser.parse({
 
 #### Non-`GET` requests
 
-For fully correct behavior, when the making a request using a HTTP method other than `GET`, specify the method type as the second argument of `parse`:
+For fully correct behavior, when the making a request using a HTTP method other than `GET`, specify the method type as the second argument of [`#parse`](#parseresponse-method--get--nitlinklinkcollection):
 
 ```ruby
 response = HTTParty.post('https://api.github.com/search/code?q=addClass+user:mozilla')
@@ -176,7 +177,7 @@ A few different Link header parsers (in various languages) already exist. Some o
 
 ### Nitlink::Parser
 
-#### `parse(response, method = 'GET')` => `Nitlink::LinkCollection`
+#### `parse(response, method = 'GET')` => [`Nitlink::LinkCollection`](#nitlinklinkcollection)
 
 Accepts the following arguments:
 
@@ -202,13 +203,13 @@ Accepts the following arguments:
       ```
 
 
-* `method` (`String`, optional) - The HTTP method used to make the request. Defaults to `'GET'`. This is used to establish the correct identity (per [RFC 7231](https://www.rfc-editor.org/info/rfc7231), Section 3.1.4.1)
+* `method` (optional, `String`) - The HTTP method used to make the request. Defaults to `'GET'`. This is used to establish the correct identity (per [RFC 7231](https://www.rfc-editor.org/info/rfc7231), Section 3.1.4.1)
 
-Returns a `Nitlink::LinkCollection` containing `Nitlink::Link` objects:
+Returns a [`Nitlink::LinkCollection`](#nitlinklinkcollection) containing [`Nitlink::Link`](#nitlinklink) objects:
 
 * When the response contains no `Link` header an empty collection is returned
 * Links without a relation type (`rel`) specified are omitted
-* The links' parameters are serialized into the `Nitlink::Link`'s `target_attributes`. For more details of the serialization see `Nitlink::Link#target_attributes` [below](#target_attributes--hash).
+* The links' parameters are serialized into the [`Nitlink::Link`](#nitlinklink)'s `target_attributes`. For more details of the serialization see [`Nitlink::Link#target_attributes`](#target_attributes--hash).
 * Where a link has more than one relation type, one entry per relation type is appended:
 
   ```ruby
