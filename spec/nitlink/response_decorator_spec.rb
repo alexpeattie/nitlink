@@ -9,7 +9,7 @@ end
 require 'nitlink/response'
 
 RSpec.describe Nitlink::ResponseDecorator do
-  let(:uri) { 'http://mockbin.org/bin/6fd230d4-c65a-48cb-a823-0594b05097ae' }
+  let(:uri) { 'http://mockbin.org/bin/e8fa7afc-26b6-4ccf-a00c-ebaac4d11461' }
   let(:expected_target) { 'http://mockbin.org/view' }
 
   def about_link(response)

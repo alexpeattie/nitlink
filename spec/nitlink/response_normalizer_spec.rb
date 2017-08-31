@@ -9,7 +9,7 @@ end
 
 RSpec.describe Nitlink::ResponseNormalizer do
   let(:rn) { described_class.new }
-  let(:uri) { 'http://mockbin.org/bin/6fd230d4-c65a-48cb-a823-0594b05097ae' }
+  let(:uri) { 'http://mockbin.org/bin/e8fa7afc-26b6-4ccf-a00c-ebaac4d11461' }
   let(:expected_metadata) { [ URI.parse(uri), 200, '</view>; rel=about', 'http://example.com'] }
   let(:headers) { { 'Content-Location' => 'http://example.com', 'Link' => '</view>; rel=about' } }
 
