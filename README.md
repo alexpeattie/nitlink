@@ -4,7 +4,7 @@
 
 **Nitlink** is a nice, nitpicky gem for parsing Link headers, which sticks as closely as possible to Mark Nottingham's parsing algorithm (from his [most recent redraft of RFC 5988](https://mnot.github.io/I-D/rfc5988bis/?#parse)). Than means it's [particularly good](#feature-comparison) at handling weird edge cases, UTF-8 encoded parameters, URI resolution, boolean parameters and more. It also plays nicely with [a bunch](#third-party-clients) of popular HTTP client libraries, and has an extensive test suite.
 
-Tested with Ruby versions from **1.9.3** up to **2.3.1**.
+Tested with Ruby versions from **1.9.3** up to **2.4.1**.
 
 ## Installation
 
