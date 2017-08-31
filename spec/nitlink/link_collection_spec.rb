@@ -49,5 +49,21 @@ RSpec.describe Nitlink::LinkCollection do
     it 'turns an empty link collection into an empty hash' do
       expect(described_class.new.to_h).to eq({})
     end
+
+    it 'supports indifferent access by default' do
+      indifferent_accessible = link_collection.to_h
+      expect(indifferent_accessible['next']).to eq link
+      expect(indifferent_accessible[:next]).to eq link
+    end
+
+    it 'can optionally return a plain hash (no indifferent access)' do
+      not_indifferent_accessible = link_collection.to_h(with_indifferent_access: false)
+      expect(not_indifferent_accessible['next']).to eq link
+      expect(not_indifferent_accessible[:next]).to be_nil
+    end
+
+    it 'is aliased as to_hash' do
+      expect(link_collection.to_hash).to eq({ 'next' => link })
+    end
   end
 end

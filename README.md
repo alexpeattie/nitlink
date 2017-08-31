@@ -240,19 +240,25 @@ If the `Link` header does not begin with `"<"`, or `"<"` isn't followed by `">"`
 
 An extension of `Array` with additional convenience methods for handling links based on their relation type.
 
-#### `by_rel(relation_type)` => `Nitlink::Link` or `nil`
+#### `by_rel(relation_type)` => [`Nitlink::Link`](#nitlinklink) or `nil`
 
 Accepts the following argument:
 
 * `relation_type` (required, `String` or `Symbol`) - a single relation type which the returned link should represent (e.g. `by_rel('terms-of-service')` would find a link pointing to legal terms).
 
-Returns a single `Nitlink::Link` object whose `relation_type` attribute matches the relation type provided, or `nil` if the collection doesn't contain a matching link. If two links exist which match the provided relation type (this should never happen in practice), the first matching link in the collection is returned.
+Returns a single [`Nitlink::Link`](#nitlinklink) object whose `relation_type` attribute matches the relation type provided, or `nil` if the collection doesn't contain a matching link. If two links exist which match the provided relation type (this should never happen in practice), the first matching link in the collection is returned.
 
 Raises an **`ArgumentError`** if the `relation_type` is blank.
 
-#### `to_h` => `Hash`
+#### `to_h(options = { with_indifferent_access: true })` => `Nitlink::HashWithIndifferentAccess` or `Hash`
 
-Returns a [`HashWithIndifferentAccess`](http://api.rubyonrails.org/classes/ActiveSupport/HashWithIndifferentAccess.html) where each key is a relation type and each value is a `Nitlink::Link`. An empty collection will return an empty hash. If two links exist which match a given relation type, the value will be the first link in the collection.
+Also aliased as `to_hash`.
+
+Accepts the following arguments:
+
+* `options` (optional, `Hash`) - When `options[:with_indifferent_access]` is truthy (as it is by default) the method returns a [`Nitlink::HashWithIndifferentAccess`](#) where each key is a relation type and each value is a [`Nitlink::Link`](#nitlinklink). When `options[:with_indifferent_access]` is falsy it returns the equivalent `Hash` with string keys.
+
+An empty collection will return an empty `Nitlink::HashWithIndifferentAccess`/`Hash`. If two links exist which match a given relation type, the value will be the first link in the collection.
 
 ### Nitlink::Link
 

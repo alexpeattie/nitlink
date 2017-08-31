@@ -7,10 +7,15 @@ module Nitlink
       find { |link| link.relation_type == relation_type.downcase.to_s }
     end
 
-    def to_h
-      hash = Nitlink::HashWithIndifferentAccess.new
-      each { |link| hash[link.relation_type] ||= link }
+    def to_h(options = { with_indifferent_access: true })
+      options = Nitlink::HashWithIndifferentAccess.new(options)
+      indifferent = options.key?(:with_indifferent_access) ? options[:with_indifferent_access] : true
+
+      hash = indifferent ? Nitlink::HashWithIndifferentAccess.new : {}
+      each { |link| hash[link.relation_type.to_s] ||= link }
       hash
     end
+
+    alias_method :to_hash, :to_h
   end
 end
