@@ -3,7 +3,7 @@
 </p>
 
 <p align='center'>
-  <a href="https://alexpeattie.github.io/nitlink/coverage/index.html"><img src="https://cdn.rawgit.com/alexpeattie/nitlink/master/coverage/coverage.svg" alt="Coverage badge"></a>
+  <a href="https://alexpeattie.github.io/nitlink/coverage/"><img src="https://cdn.rawgit.com/alexpeattie/nitlink/master/coverage/coverage.svg" alt="Coverage badge"></a>
   <a href="https://travis-ci.org/alexpeattie/nitlink"><img src="https://travis-ci.org/alexpeattie/nitlink.svg?branch=master" alt="Build Status"></a>
   <a href="https://rubygems.org/gems/nitlink/versions"><img src="https://img.shields.io/gem/v/nitlink.svg" alt="Version 1.1.0"></a>
   <a href="https://codeclimate.com/github/alexpeattie/nitlink"><img src="https://codeclimate.com/github/alexpeattie/nitlink/badges/gpa.svg" alt="Code Climate"></a>
